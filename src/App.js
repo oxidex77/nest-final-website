@@ -5,7 +5,7 @@ import {
   Users, MessageSquare, Shield, Zap,
   Building, UserPlus, Share2, PieChartIcon, Clock,
   Menu, X, Award, Globe, Linkedin, Instagram,
-  Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info, Calendar, ArrowRight, Facebook
+  Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info, Calendar, ArrowRight, Facebook, FileText, CheckCircle, Rocket, BarChart
 } from 'lucide-react';
 import { Star } from 'lucide-react';
 
@@ -492,7 +492,7 @@ const DemoSection = () => {
       const message = `*New Demo Request*\n\n` +
         `Name: ${formData.name}\n` +
         `Company: ${formData.company}\n` +
-        `Team Size: ${formData.teamSize}\n` +
+        `Team Size: ${formData.referral}\n` +
         `Contact: ${formData.phone}\n` +
         `Email: ${formData.email}\n` +
         `Hi! I'm interested in booking a demo for NEST CRM.`;
@@ -506,8 +506,9 @@ const DemoSection = () => {
         email: '',
         phone: '',
         company: '',
-        teamSize: '',
-        message: ''
+        // teamSize: '',
+        message: '',
+        referral: '',
       });
     } catch (error) {
       console.error('Error:', error);
@@ -1025,155 +1026,264 @@ const PerformanceMetrics = () => {
             )}
           </div>
         </div>
-
-        {/* Lead Source and Funnel Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-8 mt-4 sm:mt-8">
-          {/* Lead Source Distribution */}
-          {/* Lead Source Distribution */}
-<div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6 font-sans">
-  <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6 text-center">
-    Lead Source Distribution
-  </h3>
-
-  <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-8">
-    {/* Left side - Progress bars */}
-    <div className="w-full lg:w-1/2 space-y-4">
-      {/* Pre Sales Progress */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div className="flex-grow bg-gray-200 h-2 rounded-full">
-          <div className="bg-purple-600 h-2 rounded-full w-[40%]"></div>
-        </div>
-      </div>
-
-      {/* MagicBricks Progress */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div className="flex-grow bg-gray-200 h-2 rounded-full">
-          <div className="bg-purple-500 h-2 rounded-full w-[30%]"></div>
-        </div>
-      </div>
-
-      {/* 99acres Progress */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div className="flex-grow bg-gray-200 h-2 rounded-full">
-          <div className="bg-purple-400 h-2 rounded-full w-[20%]"></div>
-        </div>
-      </div>
-
-      {/* Facebook Ads Progress */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Facebook className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div className="flex-grow bg-gray-200 h-2 rounded-full">
-          <div className="bg-purple-300 h-2 rounded-full w-[10%]"></div>
-        </div>
-      </div>
-    </div>
-
-    {/* Right side - Details */}
-    <div className="w-full lg:w-1/2 space-y-4">
-      {/* Pre Sales Details */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Users className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm sm:text-base font-semibold text-gray-900">Pre Sales</span>
-            <span className="text-xs sm:text-sm font-medium rounded-full px-2 py-0.5 bg-purple-100 text-purple-600">40%</span>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500">Direct sales team outreach</p>
-        </div>
-      </div>
-
-      {/* MagicBricks Details */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm sm:text-base font-semibold text-gray-900">MagicBricks</span>
-            <span className="text-xs sm:text-sm font-medium rounded-full px-2 py-0.5 bg-purple-100 text-purple-600">30%</span>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500">Real estate portal leads</p>
-        </div>
-      </div>
-
-      {/* 99acres Details */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Globe className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm sm:text-base font-semibold text-gray-900">99acres</span>
-            <span className="text-xs sm:text-sm font-medium rounded-full px-2 py-0.5 bg-purple-100 text-purple-600">20%</span>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500">Online property marketplace</p>
-        </div>
-      </div>
-
-      {/* Facebook Ads Details */}
-      <div className="flex items-center">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-          <Facebook className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm sm:text-base font-semibold text-gray-900">Facebook Ads</span>
-            <span className="text-xs sm:text-sm font-medium rounded-full px-2 py-0.5 bg-purple-100 text-purple-600">10%</span>
-          </div>
-          <p className="text-xs sm:text-sm text-gray-500">Social media advertising</p>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
-          {/* Conversion Funnel */}
-          {/* <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">
-              Conversion Funnel
-            </h3>
-            <div className="h-64 sm:h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <FunnelChart>
-                  <Funnel
-                    dataKey="value"
-                    data={[
-                      { name: 'Leads', value: 5000, fill: '#7c3aed' },
-                      { name: 'Qualified', value: 3500, fill: '#9f7aea' },
-                      { name: 'Proposals', value: 2200, fill: '#b794f4' },
-                      { name: 'Negotiations', value: 1100, fill: '#c084fc' },
-                      { name: 'Closed', value: 800, fill: '#ddd6fe' },
-                    ]}
-                  >
-                    <LabelList 
-                      position="right" 
-                      fill="#374151" 
-                      fontSize={12}
-                    />
-                  </Funnel>
-                  <Tooltip />
-                </FunnelChart>
-              </ResponsiveContainer>
-            </div> */}
-          {/* </div> */}
-        </div>
-      </div>
-    </section>
+</section>
   );
 };
+       {/* Lead Source Distribution */}
+       {/* import React from 'react';
+import { 
+  Users, 
+  Globe, 
+  Facebook, 
+  TrendingUp 
+} from 'lucide-react'; */}
+
+const LEAD_SOURCES = [
+  {
+    icon: Users,
+    name: 'Pre Sales',
+    description: 'Direct sales team outreach',
+    percentage: 40,
+    color: 'purple',
+    progressColor: 'bg-purple-600',
+    iconBgColor: 'bg-purple-100',
+    textColor: 'text-purple-600'
+  },
+  {
+    icon: Globe,
+    name: 'MagicBricks',
+    description: 'Real estate portal leads',
+    percentage: 30,
+    color: 'blue',
+    progressColor: 'bg-blue-500',
+    iconBgColor: 'bg-blue-100',
+    textColor: 'text-blue-600'
+  },
+  {
+    icon: Globe,
+    name: '99acres',
+    description: 'Online property marketplace',
+    percentage: 20,
+    color: 'green',
+    progressColor: 'bg-green-500',
+    iconBgColor: 'bg-green-100',
+    textColor: 'text-green-600'
+  },
+  {
+    icon: Facebook,
+    name: 'Facebook Ads',
+    description: 'Social media advertising',
+    percentage: 10,
+    color: 'indigo',
+    progressColor: 'bg-indigo-400',
+    iconBgColor: 'bg-indigo-100',
+    textColor: 'text-indigo-600'
+  }
+];
+
+const LeadSourceDistribution = () => {
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 flex items-center justify-between">
+          <div>
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center">
+              <TrendingUp className="mr-3 w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
+              Lead Source Distribution
+            </h3>
+            <p className="text-gray-600 text-sm sm:text-base mt-2">
+              Breakdown of lead acquisition channels
+            </p>
+          </div>
+        </div>
+
+        {/* Lead Sources */}
+        <div className="p-6 space-y-6">
+          {LEAD_SOURCES.map((source, index) => {
+            const SourceIcon = source.icon;
+            return (
+              <div 
+                key={index} 
+                className="bg-gray-50 rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-md hover:scale-[1.01]"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4 w-full">
+                    <div className={`p-3 ${source.iconBgColor} rounded-full shrink-0`}>
+                      <SourceIcon className={`w-5 h-5 sm:w-6 sm:h-6 ${source.textColor}`} />
+                    </div>
+                    <div className="flex-grow flex justify-between items-center">
+                      <div>
+                        <div className="flex items-center space-x-2">
+                          <h4 className="text-base sm:text-lg font-semibold text-gray-800">
+                            {source.name}
+                          </h4>
+                          <span 
+                            className={`${source.iconBgColor} ${source.textColor} text-xs px-2 py-0.5 rounded-full font-medium`}
+                          >
+                            {source.percentage}%
+                          </span>
+                        </div>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                          {source.description}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className={`${source.progressColor} h-2 rounded-full`}
+                    style={{ width: `${source.percentage}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+      {/* Sales Pipeline Overview */}
+      // import { 
+      //   TrendingUp, 
+      //   Target, 
+      //   FileText, 
+      //   CheckCircle, 
+      //   Rocket,
+      //   BarChart 
+      // } from 'lucide-react';
+      
+      const PIPELINE_STAGES = [
+        {
+          icon: Rocket,
+          name: 'New Leads',
+          stage: 'Initial Contact Stage',
+          leads: 5000,
+          percentage: 100,
+          color: 'purple',
+          textColor: 'text-purple-600',
+          bgColor: 'bg-purple-100'
+        },
+        {
+          icon: Target,
+          name: 'Qualified',
+          stage: 'Evaluation Stage',
+          leads: 3500,
+          percentage: 70,
+          color: 'blue',
+          textColor: 'text-blue-600',
+          bgColor: 'bg-blue-100'
+        },
+        {
+          icon: FileText,
+          name: 'Proposals',
+          stage: 'Negotiation Stage',
+          leads: 2200,
+          percentage: 44,
+          color: 'indigo',
+          textColor: 'text-indigo-600',
+          bgColor: 'bg-indigo-100'
+        },
+        {
+          icon: CheckCircle,
+          name: 'Closed Deals',
+          stage: 'Success Stage',
+          leads: 800,
+          percentage: 16,
+          color: 'green',
+          textColor: 'text-green-600',
+          bgColor: 'bg-green-100'
+        }
+      ];
+      
+      const SalesPipelineChart = () => {
+        return (
+          <div className="container mx-auto px-4 py-8 max-w-4xl">
+            <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+                    <BarChart className="mr-3 w-8 h-8 text-purple-600" />
+                    Sales Pipeline Overview
+                  </h2>
+                  <p className="text-gray-600 mt-2">Comprehensive lead progression tracking</p>
+                </div>
+              </div>
+      
+              {/* Pipeline Stages */}
+              <div className="p-6 space-y-6">
+                {PIPELINE_STAGES.map((stage, index) => {
+                  const StageIcon = stage.icon;
+                  return (
+                    <div 
+                      key={index} 
+                      className="relative bg-gray-50 rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center space-x-4">
+                          <div className={`p-3 ${stage.bgColor} rounded-full`}>
+                            <StageIcon className={`w-6 h-6 ${stage.textColor}`} />
+                          </div>
+                          <div>
+                            <div className="flex items-center space-x-2">
+                              <h3 className="text-lg font-semibold text-gray-800">{stage.name}</h3>
+                              <span className={`${stage.bgColor} ${stage.textColor} text-xs px-2 py-0.5 rounded-full`}>
+                                {stage.percentage}%
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-500">{stage.stage}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-2xl font-bold text-gray-800">{stage.leads.toLocaleString()}</p>
+                          <p className="text-sm text-gray-500">
+                            {stage.name === 'New Leads' ? 'Total Leads' : 
+                             stage.name === 'Qualified' ? 'Qualified Leads' : 
+                             stage.name === 'Proposals' ? 'Active Proposals' : 
+                             'Successful Closures'}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2.5">
+                        <div 
+                          className={`bg-${stage.color}-500 h-2.5 rounded-full`} 
+                          style={{ width: `${stage.percentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+      
+              {/* Summary Statistics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 border-t">
+                <div className="bg-white rounded-xl p-5 shadow-sm">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-gray-600 font-medium">Average Deal Size</h4>
+                    <Rocket className="w-6 h-6 text-purple-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-800">₹65,000</p>
+                  <p className="text-sm text-gray-500">Per successful closure</p>
+                </div>
+                <div className="bg-white rounded-xl p-5 shadow-sm">
+                  <div className="flex justify-between items-center mb-4">
+                    <h4 className="text-gray-600 font-medium">Conversion Rate</h4>
+                    <CheckCircle className="w-6 h-6 text-green-500" />
+                  </div>
+                  <p className="text-3xl font-bold text-gray-800">16%</p>
+                  <p className="text-sm text-gray-500">Lead to closure ratio</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      };
+      
+      // export default SalesPipelineChart;
 // Hero Section Component
 const HeroSection = () => {
   return (
@@ -1424,6 +1534,8 @@ const App = () => {
       <FeaturesSection />
       <AnalyticsSection />
       <PerformanceMetrics />
+      <LeadSourceDistribution />
+      <SalesPipelineChart />
       <PricingSection setIsOpen={setIsOpen} />
       <DemoSection />
       <Footer />
