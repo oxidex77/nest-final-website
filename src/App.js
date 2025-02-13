@@ -5,9 +5,10 @@ import {
   Users, MessageSquare, Shield, Zap,
   Building, UserPlus, Share2, PieChartIcon, Clock,
   Menu, X, Award, Globe, Linkedin, Instagram,
-  Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info
+  Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info, Calendar, ArrowRight
 } from 'lucide-react';
 import { Star } from 'lucide-react';
+
 // import { 
 //   LineChart, Line, BarChart as RechartsBarChart, Bar, 
 //   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
@@ -207,96 +208,290 @@ const PricingCard = ({ plan, isPopular }) => {
   );
 };
 
-const PricingSection = () => {
-  const plans = [
-    {
-      name: 'Monthly',
-      originalPrice: '900',
-      price: '₹600',
-      period: 'month',
-      buttonText: 'Start Free Trial',
-      features: ['Basic Lead Management', 'Email Support', 'Mobile App Access', 'Basic Analytics', 'Performance Metrics', 'Constant Updates'],
-      guarantee: ''
-    },
-    {
-      name: 'Yearly',
-      originalPrice: '600',
-      price: '₹350',
-      period: 'month',
-      buttonText: 'Get Started',
-      features: ['All Monthly Features', 'Advanced Analytics', 'Priority Support', 'Spotlight Feature', '1-year price lock', 'Custom Integrations',],
-      guarantee: ''
-    },
-    {
-      name: 'Quarterly',
-      originalPrice: '800',
-      price: '₹450',
-      period: 'month',
-      buttonText: 'Get Started',
-      features: ['Partial Monthly Features', 'Limited Analytics', 'Standard Support', 'Quarterly Billing', 'Performance Metrics', 'Constant Updates'],
-      guarantee: ''
-    }
-  ];
-
-  return (
-    <section id="pricing" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl font-bold text-gray-900">Simple, Transparent Pricing</h2>
-          <p className="text-xl text-gray-600">Choose the plan that best fits your business needs</p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
-          {plans.map((plan, index) => (
-            <PricingCard key={plan.name} plan={plan} isPopular={index === 1} />
-          ))}
-        </div>
-
-        {/* Custom CRM Box with Icons */}
-        <div className="max-w-3xl mx-auto mt-12 bg-white rounded-2xl shadow-lg p-10 text-center border border-gray-200">
-          <h3 className="text-2xl font-bold text-gray-900">Want a Custom CRM?</h3>
-          <p className="text-lg text-gray-600 mt-2">
-            Build a fully customized CRM with tailored workflows, advanced integrations, and dedicated support.
-          </p>
-
-          {/* Icons Section */}
-          <div className="flex justify-center gap-8 mt-6 text-gray-600">
-            <div className="flex flex-col items-center">
-              <Briefcase className="w-10 h-10 text-purple-600" />
-              <span className="text-sm mt-2">Custom Workflows</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <Layers className="w-10 h-10 text-purple-600" />
-              <span className="text-sm mt-2">Advanced Integrations</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <Settings className="w-10 h-10 text-purple-600" />
-              <span className="text-sm mt-2">Dedicated Support</span>
-            </div>
-          </div>
-
-          {/* Single WhatsApp Button */}
-          <motion.a
-            href="https://wa.me/9322434882"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="mt-6 inline-block bg-purple-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-purple-700 shadow-lg"
+  
+  const PricingSection = ({ setIsOpen }) => {
+    const plans = [
+      {
+        name: 'Monthly',
+        originalPrice: '900',
+        price: '₹600',
+        period: 'month',
+        buttonText: 'Get Started',
+        features: [
+          'Basic Lead Management', 
+          'Email Support', 
+          'Mobile App Access', 
+          'Basic Analytics', 
+          'Performance Metrics', 
+          'Constant Updates'
+        ],
+        accentColor: 'bg-purple-100 text-purple-600',
+        gradient: 'from-purple-50 to-purple-100',
+        icon: Users
+      },
+      {
+        name: 'Yearly',
+        originalPrice: '600',
+        price: '₹350',
+        period: 'month',
+        buttonText: 'Get Started',
+        features: [
+          'All Monthly Features', 
+          'Advanced Analytics', 
+          'Priority Support', 
+          'Spotlight Feature', 
+          '1-year price lock', 
+          'Custom Integrations'
+        ],
+        accentColor: 'bg-green-100 text-green-600',
+        gradient: 'from-green-50 to-green-100',
+        icon: Star,
+        popular: true
+      },
+      {
+        name: 'Quarterly',
+        originalPrice: '800',
+        price: '₹450',
+        period: 'month',
+        buttonText: 'Get Started',
+        features: [
+          'Partial Monthly Features', 
+          'Limited Analytics', 
+          'Standard Support', 
+          'Quarterly Billing', 
+          'Performance Metrics', 
+          'Constant Updates'
+        ],
+        accentColor: 'bg-blue-100 text-blue-600',
+        gradient: 'from-blue-50 to-blue-100',
+        icon: Calendar
+      }
+    ];
+  
+    return (
+      <section id="pricing" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div 
+            initial={{ opacity: 0, y: -50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center max-w-3xl mx-auto mb-16"
           >
-            <MessageCircle className="w-5 h-5 mr-2 inline-block" /> Contact Sales
-          </motion.a>
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Simple, Transparent Pricing
+            </h2>
+            <p className="text-xl text-gray-600 mb-8">
+              Choose the plan that best fits your business needs
+            </p>
+            {/* <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="
+                w-full 
+                sm:w-auto 
+                flex 
+                items-center 
+                justify-center 
+                gap-2 
+                bg-purple-600 
+                text-white 
+                text-lg 
+                font-semibold 
+                py-3 
+                px-8 
+                rounded-xl 
+                hover:bg-purple-700 
+                transition-colors 
+                shadow-lg 
+                hover:shadow-xl
+                group
+              "
+              onClick={() => {
+                setIsOpen(false);
+                document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+              }}
+            > */}
+              {/* Get Started */}
+              {/* <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" /> */}
+            {/* </motion.button>*/}
+           </motion.div> 
+    
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-12">
+            {plans.map((plan, index) => (
+              <motion.div
+                key={plan.name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.2 
+                }}
+                className={`
+                  relative 
+                  rounded-2xl 
+                  shadow-lg 
+                  overflow-hidden 
+                  transform 
+                  transition-all 
+                  duration-300 
+                  group
+                  ${plan.popular ? 'scale-105 z-10 border-2 border-purple-600' : ''}
+                `}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 inset-x-0 flex justify-center">
+                    <div className="bg-purple-600 text-white px-4 py-1 rounded-full text-xs font-medium">
+                      Most Popular
+                    </div>
+                  </div>
+                )}
+                <div className={`
+                  p-6 
+                  bg-gradient-to-br 
+                  ${plan.gradient}
+                  relative
+                  overflow-hidden
+                `}>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="flex items-center justify-between mb-4 relative z-10">
+                    <h3 className="text-2xl font-bold text-gray-900">{plan.name}</h3>
+                    <div 
+                      className={`
+                        rounded-full 
+                        px-3 
+                        py-1 
+                        text-sm 
+                        font-medium 
+                        ${plan.accentColor}
+                      `}
+                    >
+                      <plan.icon className="inline-block mr-2 h-4 w-4" />
+                      {plan.name}
+                    </div>
+                  </div>
+    
+                  <div className="flex items-baseline mb-4 relative z-10">
+                    <span className="text-4xl font-bold text-gray-900 mr-2">
+                      {plan.price}
+                    </span>
+                    <span className="text-gray-500">/{plan.period}</span>
+                  </div>
+    
+                  <ul className="space-y-3 mb-6 relative z-10">
+                    {plan.features.map((feature, featureIndex) => (
+                      <li 
+                        key={feature} 
+                        className="flex items-center space-x-2"
+                      >
+                        <Check className="h-5 w-5 text-green-500" />
+                        <span className="text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+    
+                  <motion.button 
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`
+                      w-full 
+                      py-3 
+                      rounded-xl 
+                      font-semibold 
+                      transition-all 
+                      duration-300 
+                      flex 
+                      items-center 
+                      justify-center 
+                      gap-2
+                      relative 
+                      z-10
+                      ${plan.popular 
+                        ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                        : 'bg-white text-purple-600 hover:bg-purple-50 border border-purple-200'}
+                    `}
+                    onClick={() => {
+                      setIsOpen(false);
+                      document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    {plan.buttonText}
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+              
+          {/* Custom CRM Box with Icons */}
+          <div className="max-w-3xl mx-auto mt-12 bg-white rounded-2xl shadow-lg p-10 text-center border border-gray-200 hover:shadow-xl transition-shadow duration-300">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Want a Custom CRM?</h3>
+            <p className="text-lg text-gray-600 mb-6">
+              Build a fully customized CRM with tailored workflows, advanced integrations, and dedicated support.
+            </p>
+    
+            {/* Icons Section */}
+            <div className="flex justify-center gap-8 mb-8 text-gray-600">
+              {[
+                { Icon: Briefcase, label: 'Custom Workflows' },
+                { Icon: Layers, label: 'Advanced Integrations' },
+                { Icon: Settings, label: 'Dedicated Support' }
+              ].map(({ Icon, label }) => (
+                <div key={label} className="flex flex-col items-center group">
+                  <div className="
+                    w-16 
+                    h-16 
+                    bg-purple-100 
+                    rounded-full 
+                    flex 
+                    items-center 
+                    justify-center 
+                    mb-2 
+                    group-hover:bg-purple-200 
+                    transition-colors
+                  ">
+                    <Icon className="w-8 h-8 text-purple-600 group-hover:scale-110 transition-transform" />
+                  </div>
+                  <span className="text-sm text-gray-700 group-hover:text-purple-600 transition-colors">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+    
+            <motion.a
+              href="https://wa.me/9322434882"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="
+                inline-flex 
+                items-center 
+                gap-2 
+                bg-purple-600 
+                text-white 
+                py-3 
+                px-6 
+                rounded-xl 
+                font-medium 
+                hover:bg-purple-700 
+                shadow-lg 
+                transition-colors
+              "
+              onClick={() => setIsOpen(false)}
+            >
+              <MessageCircle className="w-5 h-5" /> 
+              Contact Sales
+            </motion.a>
+          </div>
         </div>
-
-        {/* <div className="mt-12 text-center">
-          <p className="text-gray-500 mb-2">Setup Cost: ₹10,000 (one-time fee)</p>
-          <p className="text-gray-500">24/7 Support Included • No Hidden Charges</p>
-        </div> */}
-      </div>
-    </section>
-  );
-};
-
+      </section>
+    );
+  };
+  
 // Demo Section Component
 const DemoSection = () => {
   const [formData, setFormData] = useState({
@@ -1258,6 +1453,8 @@ const HeroSection = () => {
 
 // Main App Component
 const App = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
@@ -1265,7 +1462,7 @@ const App = () => {
       <FeaturesSection />
       <AnalyticsSection />
       <PerformanceMetrics />
-      <PricingSection />
+      <PricingSection setIsOpen={setIsOpen} />
       <DemoSection />
       <Footer />
     </div>
