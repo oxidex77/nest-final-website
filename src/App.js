@@ -124,7 +124,8 @@ const Navigation = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden absolute left-0 right-0 px-4 pt-2 pb-3 bg-white shadow-xl rounded-b-xl border-t border-gray-100"
+              className="fixed left-0 right-0 w-full md:hidden px-4 pt-2 pb-3 bg-white shadow-xl border-t border-gray-100"
+              style={{ maxWidth: '100vw' }}
             >
               <div className="space-y-1">
                 {navItems.map((item) => (
@@ -285,8 +286,8 @@ const PricingSection = ({ setIsOpen }) => {
   ];
 
   return (
-    <section id="pricing" className="py-12 sm:py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="pricing" className="py-12 sm:py-20 bg-gradient-to-b from-gray-50 to-white w-full overflow-hidden">
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -517,9 +518,9 @@ const DemoSection = () => {
 
   return (
     <section 
-      id="demo" 
-      className="py-12 sm:py-20 bg-gradient-to-br from-purple-900 to-purple-600 overflow-hidden"
-    >
+    id="demo" 
+    className="py-12 sm:py-20 bg-gradient-to-br from-purple-900 to-purple-600 w-full overflow-hidden"
+  >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
           {/* Left Column: Benefits */}
@@ -1417,7 +1418,7 @@ const App = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white w-full overflow-x-hidden">
       <Navigation />
       <HeroSection />
       <FeaturesSection />
