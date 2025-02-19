@@ -489,10 +489,27 @@ const DemoSection = () => {
     setIsSubmitting(true);
 
     try {
+      // Replace this URL with your Google Apps Script Web App URL
+      const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzryGL2rurg-CQ4Aw9IL8v_oHjvpeJ0YoiklUiGbTOmpofGvkBEn0rn7ViU8DKm8NMj/exec';
+      
+      // Send data to Google Sheets
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(formData),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit form');
+      }
+
+      // Prepare WhatsApp message
       const message = `*New Demo Request*\n\n` +
         `Name: ${formData.name}\n` +
         `Company: ${formData.company}\n` +
-        `Team Size: ${formData.referral}\n` +
+        `Referral: ${formData.referral}\n` +
         `Contact: ${formData.phone}\n` +
         `Email: ${formData.email}\n` +
         `Hi! I'm interested in booking a demo for NEST CRM.`;
@@ -500,22 +517,26 @@ const DemoSection = () => {
       const whatsappNumber = "919322434882";
       const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
-
+  
+      // Reset form
       setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        company: '',
-        // teamSize: '',
-        message: '',
-        referral: '',
+        name: "",
+        email: "",
+        phone: "",
+        company: "",
+        referral: "",
       });
+  
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
+      alert("Submission failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
+  
+  
+  
 
   return (
     <section 
