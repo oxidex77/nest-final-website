@@ -5,10 +5,11 @@ import DataStore from './dataStore';
 
 const AppRouter = () => {
   return (
-    <Router basename="/">
+    <Router>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/data-store" element={<DataStore />} />
+        {/* Add more routes as needed */}
       </Routes>
     </Router>
   );
