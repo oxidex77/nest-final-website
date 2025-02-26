@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Helmet } from 'react-helmet';
 import { LineChart, Line, BarChart as RechartsBarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, FunnelChart, Funnel, LabelList } from 'recharts';
 import {
   Users, MessageSquare, Shield, Zap,
@@ -8,7 +9,8 @@ import {
   Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info, Calendar, ArrowRight, Facebook, FileText, CheckCircle, Rocket, BarChart
 } from 'lucide-react';
 import { Star } from 'lucide-react';
-
+import { Link } from 'react-router-dom'; // Import Link if you're using React Router
+import { Database } from 'lucide-react';
 // import { 
 //   LineChart, Line, BarChart as RechartsBarChart, Bar, 
 //   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
@@ -31,9 +33,14 @@ const staggerChildren = {
 
 // Navigation Component
 // Navigation Component
-const Navigation = () => {
+
+// Update your Navigation component with modified links
+
+export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  // Check if we're on the Data Store page
+  const isDataStorePage = window.location.pathname === '/data-store';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,31 +50,64 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Define navItems
   const navItems = [
-    { name: 'Features', href: '#features' },
-    { name: 'Analytics', href: '#analytics' },
-    { name: 'Pricing', href: '#pricing' },
-    { name: 'Enterprise', href: '#features' },
+    {
+      name: 'Features',
+      href: isDataStorePage ? '/#features' : '#features'
+    },
+    {
+      name: 'Analytics',
+      href: isDataStorePage ? '/#analytics' : '#analytics'
+    },
+    {
+      name: 'Data Store',
+      href: '/data-store',
+      isNewPage: true,
+      icon: <Database className="h-4 w-4 mr-1.5" />
+    },
+    {
+      name: 'Pricing',
+      href: isDataStorePage ? '/#pricing' : '#pricing'
+    },
+    {
+      name: 'Enterprise',
+      href: isDataStorePage ? '/#features' : '#features'
+    },
   ];
 
-// // Navigation Component
-// const Navigation = () => {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [scrolled, setScrolled] = useState(false);
+  // Helper function to handle navigation
+  const handleNavigation = (e, href) => {
+    if (href.startsWith('#') && !isDataStorePage) {
+      // On home page, scrolling to section
+      e.preventDefault();
+      const element = document.getElementById(href.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // For other cases, let the default Link behavior handle it
+  };
 
-//   useEffect(() => {
-//     const handleScroll = () => {
-//       setScrolled(window.scrollY > 20);
-//     };
-//     window.addEventListener('scroll', handleScroll);
-//     return () => window.removeEventListener('scroll', handleScroll);
-//   }, []);
+  // Helper function for demo button
+  const handleDemoClick = () => {
+    if (isDataStorePage) {
+      // Navigate to home page demo section
+      window.location.href = '/#demo';
+    } else {
+      // Scroll to demo on current page
+      const demoSection = document.getElementById('demo');
+      if (demoSection) {
+        demoSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    setIsOpen(false);
+  };
 
   return (
     <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? 'bg-white/95 backdrop-blur-sm shadow-md' : 'bg-transparent'
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/95 backdrop-blur-sm shadow-md' : 'bg-transparent'
+        }`}
     >
       <nav className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-20">
@@ -77,30 +117,46 @@ const Navigation = () => {
               animate={{ opacity: 1, x: 0 }}
               className="flex-shrink-0"
             >
-              <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-purple-500">
+              <Link to="/" className="text-xl sm:text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-purple-500">
                 NEST
-              </span>
+              </Link>
             </motion.div>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
             {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {item.name}
-              </motion.a>
+              item.isNewPage ? (
+                <motion.div key={item.name}>
+                  <Link
+                    to={item.href}
+                    className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors flex items-center"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {item.icon}
+                    {item.name}
+                    <span className="ml-1.5 text-xs px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-full">New</span>
+                  </Link>
+                </motion.div>
+              ) : (
+                <motion.a
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => handleNavigation(e, item.href)}
+                >
+                  {item.name}
+                </motion.a>
+              )
             ))}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="bg-purple-600 text-white px-4 lg:px-8 py-2 lg:py-3 rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm lg:text-base shadow-lg shadow-purple-500/20"
-              onClick={() => document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })}
+              onClick={handleDemoClick}
             >
               Book Demo
             </motion.button>
@@ -129,23 +185,36 @@ const Navigation = () => {
             >
               <div className="space-y-1">
                 {navItems.map((item) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.href}
-                    className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
-                    onClick={() => setIsOpen(false)}
-                    whileHover={{ x: 4 }}
-                  >
-                    {item.name}
-                  </motion.a>
+                  item.isNewPage ? (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors flex items-center"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.icon}
+                      {item.name}
+                      <span className="ml-1.5 text-xs px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-full">New</span>
+                    </Link>
+                  ) : (
+                    <motion.a
+                      key={item.name}
+                      href={item.href}
+                      className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                      onClick={(e) => {
+                        handleNavigation(e, item.href);
+                        setIsOpen(false);
+                      }}
+                      whileHover={{ x: 4 }}
+                    >
+                      {item.name}
+                    </motion.a>
+                  )
                 ))}
                 <motion.button
                   whileHover={{ x: 4 }}
                   className="w-full mt-2 px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/20"
-                  onClick={() => {
-                    setIsOpen(false);
-                    document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={handleDemoClick}
                 >
                   Book Demo
                 </motion.button>
@@ -225,7 +294,7 @@ const PricingCard = ({ plan, isPopular }) => {
   );
 };
 
-  
+
 const PricingSection = ({ setIsOpen }) => {
   const plans = [
     {
@@ -235,11 +304,11 @@ const PricingSection = ({ setIsOpen }) => {
       period: 'month',
       buttonText: 'Get Started',
       features: [
-        'Basic Lead Management', 
-        'Email Support', 
-        'Mobile App Access', 
-        'Basic Analytics', 
-        'Performance Metrics', 
+        'Basic Lead Management',
+        'Email Support',
+        'Mobile App Access',
+        'Basic Analytics',
+        'Performance Metrics',
         'Constant Updates'
       ],
       accentColor: 'bg-purple-100 text-purple-600',
@@ -253,11 +322,11 @@ const PricingSection = ({ setIsOpen }) => {
       period: 'month',
       buttonText: 'Get Started',
       features: [
-        'All Monthly Features', 
-        'Advanced Analytics', 
-        'Priority Support', 
-        'Spotlight Feature', 
-        '1-year price lock', 
+        'All Monthly Features',
+        'Advanced Analytics',
+        'Priority Support',
+        'Spotlight Feature',
+        '1-year price lock',
         'Custom Integrations'
       ],
       accentColor: 'bg-green-100 text-green-600',
@@ -272,11 +341,11 @@ const PricingSection = ({ setIsOpen }) => {
       period: 'month',
       buttonText: 'Get Started',
       features: [
-        'Partial Monthly Features', 
-        'Limited Analytics', 
-        'Standard Support', 
-        'Quarterly Billing', 
-        'Performance Metrics', 
+        'Partial Monthly Features',
+        'Limited Analytics',
+        'Standard Support',
+        'Quarterly Billing',
+        'Performance Metrics',
         'Constant Updates'
       ],
       accentColor: 'bg-blue-100 text-blue-600',
@@ -286,9 +355,9 @@ const PricingSection = ({ setIsOpen }) => {
   ];
 
   return (
-<section id="pricing" className="py-12 sm:py-20 bg-gradient-to-b from-gray-50 to-white w-full overflow-hidden">
-<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div 
+    <section id="pricing" className="py-12 sm:py-20 bg-gradient-to-b from-gray-50 to-white w-full overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <motion.div
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -301,7 +370,7 @@ const PricingSection = ({ setIsOpen }) => {
           <p className="text-base sm:text-xl text-gray-600 mb-6 sm:mb-8">
             Choose the plan that best fits your business needs
           </p>
-        </motion.div> 
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto mb-8 sm:mb-12">
           {plans.map((plan, index) => (
@@ -338,7 +407,7 @@ const PricingSection = ({ setIsOpen }) => {
                 overflow-hidden
               `}>
                 <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
+
                 <div className="flex items-center justify-between mb-4 relative z-10">
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{plan.name}</h3>
                   <div className={`
@@ -363,8 +432,8 @@ const PricingSection = ({ setIsOpen }) => {
 
                 <ul className="space-y-2 sm:space-y-3 mb-6 relative z-10">
                   {plan.features.map((feature, featureIndex) => (
-                    <li 
-                      key={feature} 
+                    <li
+                      key={feature}
                       className="flex items-center space-x-2"
                     >
                       <Check className="h-4 w-4 sm:h-5 sm:w-5 text-green-500 flex-shrink-0" />
@@ -373,7 +442,7 @@ const PricingSection = ({ setIsOpen }) => {
                   ))}
                 </ul>
 
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`
@@ -390,8 +459,8 @@ const PricingSection = ({ setIsOpen }) => {
                     gap-2
                     relative 
                     z-10
-                    ${plan.popular 
-                      ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                    ${plan.popular
+                      ? 'bg-purple-600 text-white hover:bg-purple-700'
                       : 'bg-white text-purple-600 hover:bg-purple-50 border border-purple-200'}
                   `}
                   onClick={() => {
@@ -406,7 +475,7 @@ const PricingSection = ({ setIsOpen }) => {
             </motion.div>
           ))}
         </div>
-            
+
         {/* Custom CRM Box with Icons */}
         <div className="max-w-3xl mx-auto mt-8 sm:mt-12 bg-white rounded-2xl shadow-lg p-6 sm:p-10 text-center border border-gray-200 hover:shadow-xl transition-shadow duration-300">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Want a Custom CRM?</h3>
@@ -465,7 +534,7 @@ const PricingSection = ({ setIsOpen }) => {
             "
             onClick={() => setIsOpen(false)}
           >
-            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" /> 
+            <MessageCircle className="w-4 h-4 sm:w-5 sm:h-5" />
             Contact Sales
           </motion.a>
         </div>
@@ -518,10 +587,10 @@ const DemoSection = () => {
   };
 
   return (
-    <section 
-    id="demo" 
-    className="py-12 sm:py-20 bg-gradient-to-br from-purple-900 to-purple-600 w-full overflow-hidden"
-  >
+    <section
+      id="demo"
+      className="py-12 sm:py-20 bg-gradient-to-br from-purple-900 to-purple-600 w-full overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
           {/* Left Column: Benefits */}
@@ -578,19 +647,19 @@ const DemoSection = () => {
                 { name: 'email', label: 'Work Email', type: 'email', placeholder: 'ayush@company.com' },
                 { name: 'phone', label: 'Phone Number', type: 'tel', placeholder: '+91 8299804567' },
                 { name: 'company', label: 'Company Name', type: 'text', placeholder: 'Real Estate Solutions Inc.' },
-                { 
-                  name: 'referral', 
-                  label: 'Referred By', 
-                  type: 'text', 
+                {
+                  name: 'referral',
+                  label: 'Referred By',
+                  type: 'text',
                   placeholder: 'Colleague Name or Channel Partner',
-                  optional: true 
+                  optional: true
                 }
               ].map((field) => (
                 <div key={field.name}>
                   <label className="block text-sm font-medium text-gray-700 mb-1.5 sm:mb-2 flex items-center">
                     {field.label}
                     {field.optional && (
-                      <span 
+                      <span
                         className="ml-2 text-gray-500 text-xs flex items-center"
                         title="Optional field"
                       >
@@ -633,14 +702,14 @@ const DemoSection = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <svg 
-                      className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white" 
-                      xmlns="http://www.w3.org/2000/svg" 
-                      fill="none" 
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
                       viewBox="0 0 24 24"
                     >
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                     </svg>
                     Processing...
                   </>
@@ -656,7 +725,7 @@ const DemoSection = () => {
   );
 };
 // Footer Component
-const Footer = () => {
+export const Footer = () => {
   const sections = [
     {
       title: 'Product',
@@ -829,21 +898,19 @@ const PerformanceMetrics = () => {
             <div className="flex flex-wrap gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setActiveTab('leads')}
-                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${
-                  activeTab === 'leads'
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${activeTab === 'leads'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
               >
                 Lead Analytics
               </button>
               <button
                 onClick={() => setActiveTab('visits')}
-                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${
-                  activeTab === 'visits'
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${activeTab === 'visits'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
               >
                 Site Visits
               </button>
@@ -853,21 +920,19 @@ const PerformanceMetrics = () => {
             <div className="flex gap-2 w-full sm:w-auto">
               <button
                 onClick={() => setDateRange('week')}
-                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${
-                  dateRange === 'week'
-                    ? 'bg-purple-100 text-purple-600'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${dateRange === 'week'
+                  ? 'bg-purple-100 text-purple-600'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
               >
                 This Week
               </button>
               <button
                 onClick={() => setDateRange('month')}
-                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${
-                  dateRange === 'month'
-                    ? 'bg-purple-100 text-purple-600'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-lg text-sm transition-colors flex-1 sm:flex-none ${dateRange === 'month'
+                  ? 'bg-purple-100 text-purple-600'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
               >
                 This Month
               </button>
@@ -880,14 +945,14 @@ const PerformanceMetrics = () => {
               {activeTab === 'leads' ? (
                 <RechartsBarChart data={performanceData.leads[dateRange]}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                  <XAxis 
-                    dataKey="date" 
-                    stroke="#6B7280" 
+                  <XAxis
+                    dataKey="date"
+                    stroke="#6B7280"
                     tick={{ fontSize: 12 }}
                     tickMargin={8}
                   />
-                  <YAxis 
-                    stroke="#6B7280" 
+                  <YAxis
+                    stroke="#6B7280"
                     tick={{ fontSize: 12 }}
                     tickMargin={8}
                   />
@@ -921,13 +986,13 @@ const PerformanceMetrics = () => {
               ) : (
                 <LineChart data={performanceData.visits[dateRange]}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                  <XAxis 
-                    dataKey="date" 
+                  <XAxis
+                    dataKey="date"
                     stroke="#6B7280"
                     tick={{ fontSize: 12 }}
                     tickMargin={8}
                   />
-                  <YAxis 
+                  <YAxis
                     stroke="#6B7280"
                     tick={{ fontSize: 12 }}
                     tickMargin={8}
@@ -1026,12 +1091,12 @@ const PerformanceMetrics = () => {
             )}
           </div>
         </div>
-</div>
-</section>
+      </div>
+    </section>
   );
 };
-       {/* Lead Source Distribution */}
-       {/* import React from 'react';
+{/* Lead Source Distribution */ }
+{/* import React from 'react';
 import { 
   Users, 
   Globe, 
@@ -1104,8 +1169,8 @@ const LeadSourceDistribution = () => {
           {LEAD_SOURCES.map((source, index) => {
             const SourceIcon = source.icon;
             return (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="bg-gray-50 rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-md hover:scale-[1.01]"
               >
                 <div className="flex items-center justify-between mb-4">
@@ -1119,7 +1184,7 @@ const LeadSourceDistribution = () => {
                           <h4 className="text-base sm:text-lg font-semibold text-gray-800">
                             {source.name}
                           </h4>
-                          <span 
+                          <span
                             className={`${source.iconBgColor} ${source.textColor} text-xs px-2 py-0.5 rounded-full font-medium`}
                           >
                             {source.percentage}%
@@ -1133,7 +1198,7 @@ const LeadSourceDistribution = () => {
                   </div>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
+                  <div
                     className={`${source.progressColor} h-2 rounded-full`}
                     style={{ width: `${source.percentage}%` }}
                   />
@@ -1146,144 +1211,144 @@ const LeadSourceDistribution = () => {
     </div>
   );
 };
-      {/* Sales Pipeline Overview */}
-      // import { 
-      //   TrendingUp, 
-      //   Target, 
-      //   FileText, 
-      //   CheckCircle, 
-      //   Rocket,
-      //   BarChart 
-      // } from 'lucide-react';
-      
-      const PIPELINE_STAGES = [
-        {
-          icon: Rocket,
-          name: 'New Leads',
-          stage: 'Initial Contact Stage',
-          leads: 5000,
-          percentage: 100,
-          color: 'purple',
-          textColor: 'text-purple-600',
-          bgColor: 'bg-purple-100'
-        },
-        {
-          icon: Target,
-          name: 'Qualified',
-          stage: 'Evaluation Stage',
-          leads: 3500,
-          percentage: 70,
-          color: 'blue',
-          textColor: 'text-blue-600',
-          bgColor: 'bg-blue-100'
-        },
-        {
-          icon: FileText,
-          name: 'Proposals',
-          stage: 'Negotiation Stage',
-          leads: 2200,
-          percentage: 44,
-          color: 'indigo',
-          textColor: 'text-indigo-600',
-          bgColor: 'bg-indigo-100'
-        },
-        {
-          icon: CheckCircle,
-          name: 'Closed Deals',
-          stage: 'Success Stage',
-          leads: 800,
-          percentage: 16,
-          color: 'green',
-          textColor: 'text-green-600',
-          bgColor: 'bg-green-100'
-        }
-      ];
-      
-      const SalesPipelineChart = () => {
-        return (
-          <div className="container mx-auto px-4 py-8 max-w-4xl">
-            <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-              {/* Header */}
-              <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 flex justify-between items-center">
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-800 flex items-center">
-                    <BarChart className="mr-3 w-8 h-8 text-purple-600" />
-                    Sales Pipeline Overview
-                  </h2>
-                  <p className="text-gray-600 mt-2">Comprehensive lead progression tracking</p>
-                </div>
-              </div>
-      
-              {/* Pipeline Stages */}
-              <div className="p-6 space-y-6">
-                {PIPELINE_STAGES.map((stage, index) => {
-                  const StageIcon = stage.icon;
-                  return (
-                    <div 
-                      key={index} 
-                      className="relative bg-gray-50 rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-4">
-                          <div className={`p-3 ${stage.bgColor} rounded-full`}>
-                            <StageIcon className={`w-6 h-6 ${stage.textColor}`} />
-                          </div>
-                          <div>
-                            <div className="flex items-center space-x-2">
-                              <h3 className="text-lg font-semibold text-gray-800">{stage.name}</h3>
-                              <span className={`${stage.bgColor} ${stage.textColor} text-xs px-2 py-0.5 rounded-full`}>
-                                {stage.percentage}%
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-500">{stage.stage}</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-gray-800">{stage.leads.toLocaleString()}</p>
-                          <p className="text-sm text-gray-500">
-                            {stage.name === 'New Leads' ? 'Total Leads' : 
-                             stage.name === 'Qualified' ? 'Qualified Leads' : 
-                             stage.name === 'Proposals' ? 'Active Proposals' : 
-                             'Successful Closures'}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2.5">
-                        <div 
-                          className={`bg-${stage.color}-500 h-2.5 rounded-full`} 
-                          style={{ width: `${stage.percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-      
-              {/* Summary Statistics */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 border-t">
-                <div className="bg-white rounded-xl p-5 shadow-sm">
-                  <div className="flex justify-between items-center mb-4">
-                    <h4 className="text-gray-600 font-medium">Average Deal Size</h4>
-                    <Rocket className="w-6 h-6 text-purple-500" />
-                  </div>
-                  <p className="text-3xl font-bold text-gray-800">₹65,000</p>
-                  <p className="text-sm text-gray-500">Per successful closure</p>
-                </div>
-                <div className="bg-white rounded-xl p-5 shadow-sm">
-                  <div className="flex justify-between items-center mb-4">
-                    <h4 className="text-gray-600 font-medium">Conversion Rate</h4>
-                    <CheckCircle className="w-6 h-6 text-green-500" />
-                  </div>
-                  <p className="text-3xl font-bold text-gray-800">16%</p>
-                  <p className="text-sm text-gray-500">Lead to closure ratio</p>
-                </div>
-              </div>
-            </div>
+{/* Sales Pipeline Overview */ }
+// import { 
+//   TrendingUp, 
+//   Target, 
+//   FileText, 
+//   CheckCircle, 
+//   Rocket,
+//   BarChart 
+// } from 'lucide-react';
+
+const PIPELINE_STAGES = [
+  {
+    icon: Rocket,
+    name: 'New Leads',
+    stage: 'Initial Contact Stage',
+    leads: 5000,
+    percentage: 100,
+    color: 'purple',
+    textColor: 'text-purple-600',
+    bgColor: 'bg-purple-100'
+  },
+  {
+    icon: Target,
+    name: 'Qualified',
+    stage: 'Evaluation Stage',
+    leads: 3500,
+    percentage: 70,
+    color: 'blue',
+    textColor: 'text-blue-600',
+    bgColor: 'bg-blue-100'
+  },
+  {
+    icon: FileText,
+    name: 'Proposals',
+    stage: 'Negotiation Stage',
+    leads: 2200,
+    percentage: 44,
+    color: 'indigo',
+    textColor: 'text-indigo-600',
+    bgColor: 'bg-indigo-100'
+  },
+  {
+    icon: CheckCircle,
+    name: 'Closed Deals',
+    stage: 'Success Stage',
+    leads: 800,
+    percentage: 16,
+    color: 'green',
+    textColor: 'text-green-600',
+    bgColor: 'bg-green-100'
+  }
+];
+
+const SalesPipelineChart = () => {
+  return (
+    <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 flex justify-between items-center">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center">
+              <BarChart className="mr-3 w-8 h-8 text-purple-600" />
+              Sales Pipeline Overview
+            </h2>
+            <p className="text-gray-600 mt-2">Comprehensive lead progression tracking</p>
           </div>
-        );
-      };
-      
-      // export default SalesPipelineChart;
+        </div>
+
+        {/* Pipeline Stages */}
+        <div className="p-6 space-y-6">
+          {PIPELINE_STAGES.map((stage, index) => {
+            const StageIcon = stage.icon;
+            return (
+              <div
+                key={index}
+                className="relative bg-gray-50 rounded-xl border border-gray-100 p-5 transition-all duration-300 hover:shadow-md hover:scale-[1.02]"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <div className={`p-3 ${stage.bgColor} rounded-full`}>
+                      <StageIcon className={`w-6 h-6 ${stage.textColor}`} />
+                    </div>
+                    <div>
+                      <div className="flex items-center space-x-2">
+                        <h3 className="text-lg font-semibold text-gray-800">{stage.name}</h3>
+                        <span className={`${stage.bgColor} ${stage.textColor} text-xs px-2 py-0.5 rounded-full`}>
+                          {stage.percentage}%
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-500">{stage.stage}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-bold text-gray-800">{stage.leads.toLocaleString()}</p>
+                    <p className="text-sm text-gray-500">
+                      {stage.name === 'New Leads' ? 'Total Leads' :
+                        stage.name === 'Qualified' ? 'Qualified Leads' :
+                          stage.name === 'Proposals' ? 'Active Proposals' :
+                            'Successful Closures'}
+                    </p>
+                  </div>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div
+                    className={`bg-${stage.color}-500 h-2.5 rounded-full`}
+                    style={{ width: `${stage.percentage}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Summary Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 border-t">
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-gray-600 font-medium">Average Deal Size</h4>
+              <Rocket className="w-6 h-6 text-purple-500" />
+            </div>
+            <p className="text-3xl font-bold text-gray-800">₹65,000</p>
+            <p className="text-sm text-gray-500">Per successful closure</p>
+          </div>
+          <div className="bg-white rounded-xl p-5 shadow-sm">
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-gray-600 font-medium">Conversion Rate</h4>
+              <CheckCircle className="w-6 h-6 text-green-500" />
+            </div>
+            <p className="text-3xl font-bold text-gray-800">16%</p>
+            <p className="text-sm text-gray-500">Lead to closure ratio</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// export default SalesPipelineChart;
 // Hero Section Component
 const HeroSection = () => {
   return (
@@ -1363,21 +1428,21 @@ const HeroSection = () => {
               overflow-hidden
             ">
               <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-              
+
               <div className="relative z-10 w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full 
                 flex items-center justify-center 
                 group-hover:bg-white/30 
                 transition-colors 
                 duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-8 sm:h-8 text-white">
-                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                 </svg>
               </div>
-              
+
               <h3 className="relative z-10 text-lg sm:text-xl font-bold text-center">
                 Performance Insights
               </h3>
-              
+
               <p className="relative z-10 text-xs sm:text-sm text-center opacity-80">
                 Real-time business analytics
               </p>
@@ -1406,23 +1471,23 @@ const HeroSection = () => {
               overflow-hidden
             ">
               <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-              
+
               <div className="relative z-10 w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full 
                 flex items-center justify-center 
                 group-hover:bg-white/30 
                 transition-colors 
                 duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-8 sm:h-8 text-white">
-                  <line x1="12" y1="20" x2="12" y2="10"/>
-                  <line x1="18" y1="20" x2="18" y2="4"/>
-                  <line x1="6" y1="20" x2="6" y2="16"/>
+                  <line x1="12" y1="20" x2="12" y2="10" />
+                  <line x1="18" y1="20" x2="18" y2="4" />
+                  <line x1="6" y1="20" x2="6" y2="16" />
                 </svg>
               </div>
-              
+
               <h3 className="relative z-10 text-lg sm:text-xl font-bold text-center">
                 Business Flow
               </h3>
-              
+
               <p className="relative z-10 text-xs sm:text-sm text-center opacity-80">
                 Automated sales pipeline management
               </p>
@@ -1451,24 +1516,24 @@ const HeroSection = () => {
               overflow-hidden
             ">
               <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-              
+
               <div className="relative z-10 w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full 
                 flex items-center justify-center 
                 group-hover:bg-white/30 
                 transition-colors 
                 duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-8 sm:h-8 text-white">
-                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                  <circle cx="9" cy="7" r="4"/>
-                  <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                  <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
-              
+
               <h3 className="relative z-10 text-lg sm:text-xl font-bold text-center">
                 Client Management
               </h3>
-              
+
               <p className="relative z-10 text-xs sm:text-sm text-center opacity-80">
                 Comprehensive lead and customer tracking
               </p>
@@ -1497,22 +1562,22 @@ const HeroSection = () => {
               overflow-hidden
             ">
               <div className="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-              
+
               <div className="relative z-10 w-12 h-12 sm:w-16 sm:h-16 bg-white/20 rounded-full 
                 flex items-center justify-center 
                 group-hover:bg-white/30 
                 transition-colors 
                 duration-300">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 sm:w-8 sm:h-8 text-white">
-                  <circle cx="12" cy="12" r="10"/>
-                  <polyline points="12 6 12 12 16 14"/>
+                  <circle cx="12" cy="12" r="10" />
+                  <polyline points="12 6 12 12 16 14" />
                 </svg>
               </div>
-              
+
               <h3 className="relative z-10 text-lg sm:text-xl font-bold text-center">
                 Follow-up Tracker
               </h3>
-              
+
               <p className="relative z-10 text-xs sm:text-sm text-center opacity-80">
                 Intelligent missed follow-up alerts
               </p>
@@ -1529,6 +1594,11 @@ const App = () => {
 
   return (
     <div className="min-h-screen bg-white w-full overflow-x-hidden">
+      <Helmet>
+        <link rel="canonical" href="https://nest-crm.com/" />
+        <title>NEST CRM - Real Estate CRM Solution</title>
+        <meta name="description" content="Streamline your real estate operations with NEST CRM - the comprehensive solution for property management, lead tracking, and analytics." />
+      </Helmet>
       <Navigation />
       <HeroSection />
       <FeaturesSection />
@@ -1654,9 +1724,8 @@ const MetricCard = ({ title, value, trend, icon: Icon, delay = 0 }) => (
         <p className="text-xs sm:text-sm text-gray-500 mb-1">{title}</p>
         <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{value}</h3>
         {trend && (
-          <p className={`text-xs sm:text-sm mt-1 ${
-            trend.startsWith('+') ? 'text-green-500' : 'text-red-500'
-          }`}>
+          <p className={`text-xs sm:text-sm mt-1 ${trend.startsWith('+') ? 'text-green-500' : 'text-red-500'
+            }`}>
             {trend}
           </p>
         )}
@@ -1742,11 +1811,10 @@ const AnalyticsSection = () => {
                 <button
                   key={period}
                   onClick={() => setSelectedPeriod(period)}
-                  className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${
-                    selectedPeriod === period
-                      ? 'bg-purple-600 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+                  className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-colors ${selectedPeriod === period
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    }`}
                 >
                   {period.charAt(0).toUpperCase() + period.slice(1)}
                 </button>
@@ -1758,13 +1826,13 @@ const AnalyticsSection = () => {
             <ResponsiveContainer width="100%" height="100%">
               <RechartsBarChart data={chartData[selectedPeriod]}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis 
-                  dataKey="name" 
+                <XAxis
+                  dataKey="name"
                   stroke="#6B7280"
                   tick={{ fontSize: 12 }}
                   tickMargin={8}
                 />
-                <YAxis 
+                <YAxis
                   stroke="#6B7280"
                   tick={{ fontSize: 12 }}
                   tickMargin={8}
