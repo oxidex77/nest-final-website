@@ -517,52 +517,59 @@ const ChevronUp = ({ className }) => (
     </svg>
 );
 
-// WhatsApp floating button
-const WhatsAppButton = () => {
-    const [showTooltip, setShowTooltip] = useState(false);
+// WhatsApp floating button 
+const WhatsAppButton = () => {     
+    const [showTooltip, setShowTooltip] = useState(false);      
 
-    const handleClick = () => {
-        openWhatsApp("Hello! I'm interested in learning more about your real estate data services. Could you please provide more information?");
-    };
+    const handleClick = () => {         
+        const whatsappUrl = `https://wa.me/YOUR_PHONE_NUMBER?text=${encodeURIComponent("Hello! I'm interested in learning more about your real estate data services. Could you please provide more information?")}`;
+        
+        // Mobile-friendly WhatsApp link opening
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+            window.location.href = whatsappUrl;
+        } else {
+            window.open(whatsappUrl, '_blank');
+        }
+    };      
 
-    return (
-        <div className="fixed bottom-6 left-6 z-40">
-            <div className="relative group">
-                <motion.button
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="bg-green-500 text-white p-4 rounded-full shadow-lg flex items-center justify-center"
-                    onClick={handleClick}
-                    onMouseEnter={() => setShowTooltip(true)}
-                    onMouseLeave={() => setShowTooltip(false)}
-                    aria-label="Contact via WhatsApp"
-                >
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                    </svg>
-                </motion.button>
+    return (         
+        <div className="fixed bottom-24 left-6 sm:bottom-6 z-40">             
+            <div className="relative group">                 
+                <motion.button                     
+                    whileHover={{ scale: 1.1 }}                     
+                    whileTap={{ scale: 0.9 }}                     
+                    className="bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-lg flex items-center justify-center"                     
+                    onClick={handleClick}                     
+                    onMouseEnter={() => setShowTooltip(true)}                     
+                    onMouseLeave={() => setShowTooltip(false)}                     
+                    aria-label="Contact via WhatsApp"                 
+                >                     
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">                         
+                        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>                     
+                    </svg>                 
+                </motion.button>                  
+                
+                {showTooltip && (                     
+                    <div className="hidden sm:block absolute left-full ml-2 bottom-0 bg-white shadow-lg rounded-lg p-2 w-48 text-sm">                         
+                        <p className="text-gray-700">Need help? Chat with us on WhatsApp</p>                     
+                    </div>                 
+                )}             
+            </div>         
+        </div>     
+    ); 
+};  
 
-                {showTooltip && (
-                    <div className="absolute left-full ml-2 bottom-0 bg-white shadow-lg rounded-lg p-2 w-48 text-sm">
-                        <p className="text-gray-700">Need help? Chat with us on WhatsApp</p>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-};
-
-// Help button for elderly users
-const HelpButton = ({ setShowTutorial }) => {
-    return (
-        <button
-            onClick={() => setShowTutorial(true)}
-            className="fixed bottom-20 left-6 z-40 bg-blue-500 text-white p-3 rounded-full shadow-lg"
-            aria-label="Get help"
-        >
-            <HelpCircle className="h-6 w-6" />
-        </button>
-    );
+// Help button for elderly users 
+const HelpButton = ({ setShowTutorial }) => {     
+    return (         
+        <button             
+            onClick={() => setShowTutorial(true)}             
+            className="fixed bottom-36 left-6 sm:bottom-20 z-40 bg-blue-500 text-white p-3 rounded-full shadow-lg"             
+            aria-label="Get help"         
+        >             
+            <HelpCircle className="h-5 w-5 sm:h-6 sm:w-6" />         
+        </button>     
+    ); 
 };
 
 // Tutorial overlay for elderly users

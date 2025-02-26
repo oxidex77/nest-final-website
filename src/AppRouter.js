@@ -4,14 +4,14 @@ import App from './App';
 import DataStore from './dataStore';
 
 const AppRouter = () => {
-    return (
-      <Router>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/data-store" element={<DataStore />} />
-        </Routes>
-      </Router>
-    );
-  };
+  return (
+    <Router basename="/">
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/data-store" element={<DataStore />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default AppRouter;
