@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Database } from 'lucide-react';
+import { Menu, X, Database, Shield, FileText, MessageSquare } from 'lucide-react';
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,8 +10,8 @@ export const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Check if we're on the data store page
-  const isDataStorePage = location.pathname === '/data-store';
+  // Check if we're on a page other than home
+  const isNotHomePage = location.pathname !== '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,12 +25,12 @@ export const Navigation = () => {
   const navItems = [
     {
       name: 'Features',
-      to: isDataStorePage ? '/' : '#features',
+      to: isNotHomePage ? '/' : '#features',
       section: 'features'
     },
     {
       name: 'Analytics',
-      to: isDataStorePage ? '/' : '#analytics',
+      to: isNotHomePage ? '/' : '#analytics',
       section: 'analytics'
     },
     {
@@ -41,38 +41,58 @@ export const Navigation = () => {
     },
     {
       name: 'Pricing',
-      to: isDataStorePage ? '/' : '#pricing',
+      to: isNotHomePage ? '/' : '#pricing',
       section: 'pricing'
     },
     {
       name: 'Enterprise',
-      to: isDataStorePage ? '/' : '#features',
+      to: isNotHomePage ? '/' : '#features',
       section: 'features'
     },
   ];
 
+  // Define legal/utility pages for the footer dropdown
+  const legalPages = [
+    {
+      name: 'Privacy Policy',
+      to: '/privacy-policy',
+      icon: <Shield className="h-4 w-4 mr-1.5" />
+    },
+    {
+      name: 'Data Deletion',
+      to: '/delete',
+      icon: <FileText className="h-4 w-4 mr-1.5" />
+    },
+    {
+      name: 'Feedback',
+      to: '/feedback',
+      icon: <MessageSquare className="h-4 w-4 mr-1.5" />
+    }
+  ];
+
   // Helper function to handle navigation
   const handleNavigation = (e, to, section) => {
+    // If we're not on home page, but the link is for a home page section
+    if (to.startsWith('#') && isNotHomePage) {
+      e.preventDefault();
+      // Store the target section in sessionStorage to retrieve it after navigation
+      sessionStorage.setItem('scrollToSection', section);
+      navigate('/');
+    } 
     // If we're on the home page and using a hash link, scroll to section
-    if (to.startsWith('#') && !isDataStorePage) {
+    else if (to.startsWith('#')) {
       e.preventDefault();
       const element = document.getElementById(to.substring(1));
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
-    } 
-    // If we're on the data store page, we need to navigate back to the home page
-    else if (isDataStorePage && section) {
-      // Don't prevent default - let it navigate to the home page
-      // After navigation, we'll handle scrolling with a useEffect in App.js
-      // Store the target section in sessionStorage to retrieve it after navigation
-      sessionStorage.setItem('scrollToSection', section);
     }
+    // For other routes, let React Router handle it normally
   };
 
   // Helper function for demo button
   const handleDemoClick = () => {
-    if (isDataStorePage) {
+    if (isNotHomePage) {
       // Navigate home and then to demo
       sessionStorage.setItem('scrollToSection', 'demo');
       navigate('/');
@@ -85,6 +105,9 @@ export const Navigation = () => {
     }
     setIsOpen(false);
   };
+
+  // State for legal dropdown
+  const [legalDropdownOpen, setLegalDropdownOpen] = useState(false);
 
   return (
     <header
@@ -106,7 +129,7 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-4 lg:space-x-8">
+          <div className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {navItems.map((item) => (
               item.isNewPage ? (
                 <motion.div key={item.name}>
@@ -133,6 +156,57 @@ export const Navigation = () => {
                 </motion.div>
               )
             ))}
+
+            {/* Legal Pages Dropdown */}
+            <div className="relative">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors flex items-center"
+                onClick={() => setLegalDropdownOpen(!legalDropdownOpen)}
+              >
+                <Shield className="h-4 w-4 mr-1.5" />
+                Legal
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className={`h-4 w-4 ml-1 transition-transform ${legalDropdownOpen ? 'rotate-180' : ''}`} 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </motion.button>
+              
+              {/* Dropdown Menu */}
+              <AnimatePresence>
+                {legalDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+                    onMouseLeave={() => setLegalDropdownOpen(false)}
+                  >
+                    <div className="py-1">
+                      {legalPages.map((page) => (
+                        <Link
+                          key={page.name}
+                          to={page.to}
+                          className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                          onClick={() => setLegalDropdownOpen(false)}
+                        >
+                          {page.icon}
+                          {page.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+            
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -192,6 +266,25 @@ export const Navigation = () => {
                     </motion.div>
                   )
                 ))}
+
+                {/* Legal Pages Section */}
+                <div className="mt-2 pt-2 border-t border-gray-100">
+                  <h3 className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    Legal & Support
+                  </h3>
+                  {legalPages.map((page) => (
+                    <Link
+                      key={page.name}
+                      to={page.to}
+                      className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors flex items-center"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {page.icon}
+                      {page.name}
+                    </Link>
+                  ))}
+                </div>
+                
                 <motion.button
                   whileHover={{ x: 4 }}
                   className="w-full mt-2 px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-lg shadow-purple-500/20"
