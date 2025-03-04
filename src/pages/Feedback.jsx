@@ -147,64 +147,6 @@ const Feedback = () => {
           </div>
         </div>
 
-        {/* Testimonials */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-              What Our Customers Say
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              We've helped real estate professionals across India streamline their operations. 
-              Here's what some of them have to say.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                quote: "NEST CRM transformed how we manage leads. The team was incredibly responsive to our feature requests.",
-                author: "Rahul Sharma",
-                position: "Real Estate Agent, Mumbai",
-                rating: 5
-              },
-              {
-                quote: "What stands out about NEST is how they continuously improve based on user feedback. It's become essential to our business.",
-                author: "Priya Patel",
-                position: "Property Manager, Delhi",
-                rating: 5
-              },
-              {
-                quote: "I suggested a few features through their feedback form, and within weeks they were implemented. Impressive service!",
-                author: "Vikram Singh",
-                position: "Broker, Bangalore",
-                rating: 4
-              }
-            ].map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 + index * 0.1 }}
-                className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
-              >
-                <div className="mb-4 flex">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                  {[...Array(5 - testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-gray-300" />
-                  ))}
-                </div>
-                <p className="text-gray-700 italic mb-4">{testimonial.quote}</p>
-                <div>
-                  <p className="font-medium text-gray-900">{testimonial.author}</p>
-                  <p className="text-sm text-gray-500">{testimonial.position}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-
         {/* CTA */}
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 text-center">
           <motion.div
