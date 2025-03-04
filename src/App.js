@@ -9,14 +9,9 @@ import {
   Mail, Check, Target, MessageCircle, Briefcase, Layers, Settings, TrendingUp, Banknote, Info, Calendar, ArrowRight, Facebook, FileText, CheckCircle, Rocket, BarChart
 } from 'lucide-react';
 import { Star } from 'lucide-react';
-import { Link } from 'react-router-dom'; // Import Link if you're using React Router
+import { Link, useLocation } from 'react-router-dom'; // Import Link if you're using React Router
 import { Database } from 'lucide-react';
-// import { 
-//   LineChart, Line, BarChart as RechartsBarChart, Bar, 
-//   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-//   PieChart, Pie, Cell, FunnelChart, Funnel, LabelList  // Add these three
-// } from 'recharts';
-// // Utility Functions
+
 const fadeInUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -35,12 +30,10 @@ const staggerChildren = {
 // Navigation Component
 
 // Update your Navigation component with modified links
-
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  // Check if we're on the Data Store page
-  const isDataStorePage = window.location.pathname === '/data-store';
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,44 +47,49 @@ export const Navigation = () => {
   const navItems = [
     {
       name: 'Features',
-      href: isDataStorePage ? '/#features' : '#features'
+      to: '/#features'
     },
     {
       name: 'Analytics',
-      href: isDataStorePage ? '/#analytics' : '#analytics'
+      to: '/#analytics'
     },
     {
       name: 'Data Store',
-      href: '/data-store',
+      to: '/data-store',
       isNewPage: true,
       icon: <Database className="h-4 w-4 mr-1.5" />
     },
     {
       name: 'Pricing',
-      href: isDataStorePage ? '/#pricing' : '#pricing'
+      to: '/#pricing'
     },
     {
       name: 'Enterprise',
-      href: isDataStorePage ? '/#features' : '#features'
+      to: '/#features'
     },
   ];
 
   // Helper function to handle navigation
-  const handleNavigation = (e, href) => {
-    if (href.startsWith('#') && !isDataStorePage) {
+  const handleNavigation = (e, to) => {
+    if (to.startsWith('/#') && location.pathname === '/') {
       // On home page, scrolling to section
       e.preventDefault();
-      const element = document.getElementById(href.substring(1));
+      const sectionId = to.substring(2); // Remove the '/#' prefix
+      const element = document.getElementById(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
     }
-    // For other cases, let the default Link behavior handle it
+    // For links that point to the root with hash, handle properly from data-store
+    if (to.startsWith('/#') && location.pathname !== '/') {
+      // We're not on the home page, so don't prevent default
+      // The Link component will navigate to home page with the hash
+    }
   };
 
   // Helper function for demo button
   const handleDemoClick = () => {
-    if (isDataStorePage) {
+    if (location.pathname === '/data-store') {
       // Navigate to home page demo section
       window.location.href = '/#demo';
     } else {
@@ -129,7 +127,7 @@ export const Navigation = () => {
               item.isNewPage ? (
                 <motion.div key={item.name}>
                   <Link
-                    to={item.href}
+                    to={item.to}
                     className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors flex items-center"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -140,16 +138,15 @@ export const Navigation = () => {
                   </Link>
                 </motion.div>
               ) : (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={(e) => handleNavigation(e, item.href)}
-                >
-                  {item.name}
-                </motion.a>
+                <motion.div key={item.name} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Link
+                    to={item.to}
+                    className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm lg:text-base font-medium transition-colors"
+                    onClick={(e) => handleNavigation(e, item.to)}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
               )
             ))}
             <motion.button
@@ -188,7 +185,7 @@ export const Navigation = () => {
                   item.isNewPage ? (
                     <Link
                       key={item.name}
-                      to={item.href}
+                      to={item.to}
                       className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors flex items-center"
                       onClick={() => setIsOpen(false)}
                     >
@@ -197,18 +194,18 @@ export const Navigation = () => {
                       <span className="ml-1.5 text-xs px-1.5 py-0.5 bg-purple-100 text-purple-700 rounded-full">New</span>
                     </Link>
                   ) : (
-                    <motion.a
-                      key={item.name}
-                      href={item.href}
-                      className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
-                      onClick={(e) => {
-                        handleNavigation(e, item.href);
-                        setIsOpen(false);
-                      }}
-                      whileHover={{ x: 4 }}
-                    >
-                      {item.name}
-                    </motion.a>
+                    <motion.div key={item.name} whileHover={{ x: 4 }}>
+                      <Link
+                        to={item.to}
+                        className="block px-4 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-medium text-gray-700 hover:text-purple-600 hover:bg-purple-50 transition-colors"
+                        onClick={(e) => {
+                          handleNavigation(e, item.to);
+                          setIsOpen(false);
+                        }}
+                      >
+                        {item.name}
+                      </Link>
+                    </motion.div>
                   )
                 ))}
                 <motion.button
@@ -1591,7 +1588,8 @@ const HeroSection = () => {
 // Main App Component
 const App = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   return (
     <div className="min-h-screen bg-white w-full overflow-x-hidden">
       <Helmet>
@@ -1599,15 +1597,24 @@ const App = () => {
         <title>NEST CRM - Real Estate CRM Solution</title>
         <meta name="description" content="Streamline your real estate operations with NEST CRM - the comprehensive solution for property management, lead tracking, and analytics." />
       </Helmet>
+
+      {/* Navigation is now a separate component */}
       <Navigation />
-      <HeroSection />
-      <FeaturesSection />
-      <AnalyticsSection />
-      <PerformanceMetrics />
-      <LeadSourceDistribution />
-      <SalesPipelineChart />
-      <PricingSection setIsOpen={setIsOpen} />
-      <DemoSection />
+
+      {/* Only render home page content when on the home page */}
+      {isHomePage && (
+        <>
+          <HeroSection />
+          <FeaturesSection />
+          <AnalyticsSection />
+          <PerformanceMetrics />
+          <LeadSourceDistribution />
+          <SalesPipelineChart />
+          <PricingSection setIsOpen={setIsOpen} />
+          <DemoSection />
+        </>
+      )}
+
       <Footer />
     </div>
   );

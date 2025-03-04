@@ -62,7 +62,7 @@ import {
 } from 'lucide-react';
 
 // Import Navigation and Footer from App
-import { Navigation } from './App';
+import { Navigation } from './Navigation'; 
 import { Footer } from './App';
 // Helper function to open WhatsApp
 const openWhatsApp = (message) => {
@@ -1780,130 +1780,130 @@ const DataStore = () => {
 
             {/* Enhanced Footer with WhatsApp Contact */}
             <footer className="bg-gray-900 text-gray-300">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
-                        <div>
-                            <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Contact Us</h4>
-                            <div className="space-y-3">
-                                <button
-                                    onClick={() => openWhatsApp("I'd like to speak with the sales team about your real estate data services.")}
-                                    className="flex items-center text-gray-400 hover:text-white transition-colors"
-                                >
-                                    <MessageCircle className="h-5 w-5 mr-2 text-green-500" />
-                                    <span>WhatsApp: +91 93224 34882</span>
-                                </button>
-                                <p className="flex items-center text-gray-400">
-                                    <Mail className="h-5 w-5 mr-2" />
-                                    <span>nestcrmandmarketing@gmail.com</span>
-                                </p>
-                                <p className="flex items-center text-gray-400">
-                                    <MapPin className="h-5 w-5 mr-2" />
-                                    <span>Mumbai, India</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Quick Links</h4>
-                            <ul className="space-y-2">
-                                <li>
-                                    <Link to="/" className="text-gray-400 hover:text-white transition-colors">
-                                        Home
-                                    </Link>
-                                </li>
-                                <li>
-                                    <a href="#features" className="text-gray-400 hover:text-white transition-colors">
-                                        Features
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#datasets" className="text-gray-400 hover:text-white transition-colors">
-                                        Data Store
-                                    </a>
-                                </li>
-                                <li>
-                                    <Link to="/#pricing" className="text-gray-400 hover:text-white transition-colors">
-                                        Pricing
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Resources</h4>
-                            <ul className="space-y-2">
-                                <li>
-                                    <button
-                                        onClick={() => setShowTutorial(true)}
-                                        className="text-gray-400 hover:text-white transition-colors"
-                                    >
-                                        How to Use
-                                    </button>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                        Documentation
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                        API Access
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                        Support
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Newsletter</h4>
-                            <p className="text-sm text-gray-400 mb-3">
-                                Subscribe to get updates on new datasets and features
-                            </p>
-                            <div className="flex">
-                                <input
-                                    type="email"
-                                    placeholder="Your email"
-                                    className="bg-gray-800 text-white rounded-l-lg px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-                                />
-                                <button className="bg-purple-600 text-white rounded-r-lg px-4 hover:bg-purple-700 transition-colors">
-                                    <ArrowRight className="h-5 w-5" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center">
-                        <div className="flex items-center mb-4 sm:mb-0">
-                            <span className="text-xl sm:text-2xl font-bold text-white">NEST</span>
-                            <span className="text-gray-400 ml-2 text-sm">
-                                © {new Date().getFullYear()} NEST CRM. All rights reserved.
-                            </span>
-                        </div>
-
-                        <div className="flex space-x-4">
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                                </svg>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0z" /><path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8z" /><circle cx="18.406" cy="5.594" r="1.44" />
-                                </svg>
-                            </a>
-                            <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+                <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Contact Us</h4>
+                <div className="space-y-3">
+                    <button
+                        onClick={() => openWhatsApp("I'd like to speak with the sales team about your real estate data services.")}
+                        className="flex items-center text-gray-400 hover:text-white transition-colors"
+                    >
+                        <MessageCircle className="h-5 w-5 mr-2 text-green-500" />
+                        <span>WhatsApp: +91 93224 34882</span>
+                    </button>
+                    <p className="flex items-center text-gray-400">
+                        <Mail className="h-5 w-5 mr-2" />
+                        <span>nestcrmandmarketing@gmail.com</span>
+                    </p>
+                    <p className="flex items-center text-gray-400">
+                        <MapPin className="h-5 w-5 mr-2" />
+                        <span>Mumbai, India</span>
+                    </p>
                 </div>
-            </footer>
+            </div>
+
+            <div>
+                <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Quick Links</h4>
+                <ul className="space-y-2">
+                    <li>
+                        <Link to="/" className="text-gray-400 hover:text-white transition-colors">
+                            Home
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/#features" className="text-gray-400 hover:text-white transition-colors">
+                            Features
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/data-store" className="text-gray-400 hover:text-white transition-colors">
+                            Data Store
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/#pricing" className="text-gray-400 hover:text-white transition-colors">
+                            Pricing
+                        </Link>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Resources</h4>
+                <ul className="space-y-2">
+                    <li>
+                        <button
+                            onClick={() => setShowTutorial(true)}
+                            className="text-gray-400 hover:text-white transition-colors"
+                        >
+                            How to Use
+                        </button>
+                    </li>
+                    <li>
+                        <button className="text-gray-400 hover:text-white transition-colors">
+                            Documentation
+                        </button>
+                    </li>
+                    <li>
+                        <button className="text-gray-400 hover:text-white transition-colors">
+                            API Access
+                        </button>
+                    </li>
+                    <li>
+                        <button className="text-gray-400 hover:text-white transition-colors">
+                            Support
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <h4 className="text-base sm:text-lg font-semibold text-white mb-4">Newsletter</h4>
+                <p className="text-sm text-gray-400 mb-3">
+                    Subscribe to get updates on new datasets and features
+                </p>
+                <div className="flex">
+                    <input
+                        type="email"
+                        placeholder="Your email"
+                        className="bg-gray-800 text-white rounded-l-lg px-4 py-2 w-full text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                    <button className="bg-purple-600 text-white rounded-r-lg px-4 hover:bg-purple-700 transition-colors">
+                        <ArrowRight className="h-5 w-5" />
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div className="mt-8 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center">
+            <div className="flex items-center mb-4 sm:mb-0">
+                <span className="text-xl sm:text-2xl font-bold text-white">NEST</span>
+                <span className="text-gray-400 ml-2 text-sm">
+                    © {new Date().getFullYear()} NEST CRM. All rights reserved.
+                </span>
+            </div>
+
+            <div className="flex space-x-4">
+                <button className="text-gray-400 hover:text-white transition-colors">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                    </svg>
+                </button>
+                <button className="text-gray-400 hover:text-white transition-colors">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0z" /><path d="M12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8z" /><circle cx="18.406" cy="5.594" r="1.44" />
+                    </svg>
+                </button>
+                <button className="text-gray-400 hover:text-white transition-colors">
+                    <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</footer>
         </div>
     );
 };
